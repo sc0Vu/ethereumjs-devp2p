@@ -8,13 +8,13 @@ const assert = require('assert')
 const { randomBytes } = require('crypto')
 const rlp = require('rlp-encoding')
 const Buffer = require('safe-buffer').Buffer
+const Common = require('ethereumjs-common')
 
 const PRIVATE_KEY = randomBytes(32)
 const CHAIN_ID = 1
 
-const BOOTNODES = require('ethereum-common').bootstrapNodes.filter((node) => {
-  return node.chainId === CHAIN_ID
-}).map((node) => {
+const CHAIN = new Common(CHAIN_ID)
+const BOOTNODES = CHAIN.bootstrapNodes().map((node) => {
   return {
     address: node.ip,
     udpPort: node.port,

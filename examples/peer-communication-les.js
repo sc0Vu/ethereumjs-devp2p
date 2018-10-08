@@ -7,6 +7,7 @@ const chalk = require('chalk')
 const assert = require('assert')
 const { randomBytes } = require('crypto')
 const Buffer = require('safe-buffer').Buffer
+const Common = require('ethereumjs-common')
 
 const PRIVATE_KEY = randomBytes(32)
 
@@ -14,9 +15,8 @@ const CHAIN_ID = 4 // Rinkeby
 const GENESIS_TD = 1
 const GENESIS_HASH = Buffer.from('6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177', 'hex')
 
-const BOOTNODES = require('ethereum-common').bootstrapNodes.filter((node) => {
-  return node.chainId === CHAIN_ID
-}).map((node) => {
+const CHAIN = new Common(CHAIN_ID)
+const BOOTNODES = CHAIN.bootstrapNodes().map((node) => {
   return {
     address: node.ip,
     udpPort: node.port,
